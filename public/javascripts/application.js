@@ -229,8 +229,9 @@ function enable_rich_interaction(){
   /* Drag & Drop for successor/predecessor */
   function drop_todo(evt, ui) {
     dragged_todo = ui.draggable[0].id.split('_')[2];
-    dropped_todo = $(this).parents('.item-show').get(0).id.split('_')[2];
+    dropped_todo = this.id.split('_')[2];
     ui.draggable.remove();
+    $('.drop_target').hide(); // IE8 doesn't call stop() in this situation
     $(this).block({message: null});
     $.post(relative_to_root('todos/add_predecessor'),
         {successor: dragged_todo, predecessor: dropped_todo},
@@ -247,7 +248,7 @@ function enable_rich_interaction(){
       start: drag_todo,
       stop: function() {$('.drop_target').hide();}});
 
-  $('.successor_target').droppable({drop: drop_todo,
+  $('.item-show').droppable({drop: drop_todo,
       tolerance: 'pointer',
       hoverClass: 'hover'});
   
@@ -259,9 +260,8 @@ function enable_rich_interaction(){
     ui.draggable.remove();
     target.block({message: null});
     setTimeout(function() {target.show()}, 0);
-    $.post(relative_to_root('todos/update'),
-        {id: dragged_todo,
-         "todo[id]": dragged_todo,
+    $.post(relative_to_root('todos/change_context'),
+        {"todo[id]": dragged_todo,
          "todo[context_id]": context_id},
         function(){target.unblock(); target.hide();}, 'script');
   }
