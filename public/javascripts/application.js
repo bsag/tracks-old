@@ -49,7 +49,7 @@ $.fn.clearForm = function() {
 
 /* Set up authenticity token properly */
 $(document).ajaxSend(function(event, request, settings) {
-  if ( settings.type == 'POST' ) {
+  if ( settings.type == 'POST' || settings.type == 'post' ) {
     if(typeof(AUTH_TOKEN) != 'undefined'){
       settings.data = (settings.data ? settings.data + "&" : "")
         + "authenticity_token=" + encodeURIComponent( AUTH_TOKEN ) + "&"
@@ -273,6 +273,8 @@ function enable_rich_interaction(){
 
   /* Reset auto updater */
   field_touched = false;
+
+  $('h2#project_name').editable(save_project_name, {style: 'padding:0px', submit: "OK"});
 }
 
 /* Auto-refresh */
@@ -461,8 +463,6 @@ $(document).ready(function() {
       $.post(relative_to_root('projects/update/'+project_id), {'project[name]': value, 'update_project_name': 'true'}, highlight, 'script');
       return(value);
   };
-
-  $('h2#project_name').editable(save_project_name, {style: 'padding:0px', submit: "OK"});
 
   $('.alphabetize_link').click(function(evt){
       evt.preventDefault();
