@@ -66,6 +66,33 @@ When /I change the (.*) field of "([^\"]*)" to "([^\"]*)"$/ do |field, todo_name
   sleep(5)
 end
 
+When /^I submit a new action with description "([^"]*)"$/ do |description|
+  fill_in "todo[description]", :with => description
+  submit_next_action_form
+end
+
+When /^I submit multiple actions with using$/ do |multiple_actions|
+  fill_in "todo[multiple_todos]", :with => multiple_actions
+  submit_multiple_next_action_form
+end
+
+When /^I fill the multiple actions form with "([^"]*)", "([^"]*)", "([^"]*)", "([^"]*)"$/ do |descriptions, project_name, context_name, tags|
+  fill_in "todo[multiple_todos]", :with => descriptions
+  fill_in "multi_todo_project_name", :with => project_name
+  fill_in "multi_todo_context_name", :with => context_name
+  fill_in "multi_tag_list", :with => tags
+end
+
+When /^I submit the new multiple actions form with "([^"]*)", "([^"]*)", "([^"]*)", "([^"]*)"$/ do |descriptions, project_name, context_name, tags|
+  When "I fill the multiple actions form with \"#{descriptions}\", \"#{project_name}\", \"#{context_name}\", \"#{tags}\""
+  submit_multiple_next_action_form
+end
+
+When /^I submit the new multiple actions form with$/ do |multi_line_descriptions|
+  fill_in "todo[multiple_todos]", :with => multi_line_descriptions
+  submit_multiple_next_action_form
+end
+
 Then /^the dependencies of "(.*)" should include "(.*)"$/ do |child_name, parent_name|
   parent = @current_user.todos.find_by_description(parent_name)
   parent.should_not be_nil
@@ -95,4 +122,8 @@ end
 
 Then /^I should not see the todo "([^\"]*)"$/ do |todo_description|
   selenium.is_element_present("//span[.=\"#{todo_description}\"]").should be_false
+end
+
+Then /^the number of actions should be (\d+)$/ do |count|
+  @current_user.todos.count.should == count.to_i
 end

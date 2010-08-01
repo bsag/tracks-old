@@ -15,10 +15,23 @@ Given /^there exists a project "([^\"]*)" for user "([^\"]*)"$/ do |project_name
   user.projects.create!(:name => project_name)
 end
 
+Given /^there exists a project called "([^"]*)" for user "([^"]*)"$/ do |project_name, login|
+  # TODO: regexp change to integrate this with the previous since only 'called' is different
+  Given "there exists a project \"#{project_name}\" for user \"#{login}\""
+end
+
+Given /^I have a project called "([^"]*)"$/ do |project_name|
+  Given "there exists a project \"#{project_name}\" for user \"#{@current_user.login}\""
+end
+
 When /^I visit the "([^\"]*)" project$/ do |project_name|
   @project = Project.find_by_name(project_name)
   @project.should_not be_nil
   visit project_path(@project)
+end
+
+When /^I visit the project page for "([^"]*)"$/ do |project_name|
+  When "I visit the \"#{project_name}\" project"
 end
 
 When /^I edit the project description to "([^\"]*)"$/ do |new_description|
