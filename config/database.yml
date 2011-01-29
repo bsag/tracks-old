@@ -1,0 +1,23 @@
+development:
+  adapter: mysql
+  database: database
+  host: localhost
+  username: foo
+  password: bar
+
+test: &TEST
+    adapter: sqlite3
+    database: ":memory:"
+
+production:
+  adapter: mysql
+  database: tracks
+  host: localhost
+  username: foo
+  password: bar
+
+cucumber:
+  <<: *TEST
+
+selenium:
+  <<: *TEST

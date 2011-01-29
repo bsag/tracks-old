@@ -1,0 +1,53 @@
+# This is the 'salt' to add to the password before it is encrypted
+# You need to change this to something unique for yourself
+salt: "this_is_for_testing_only"
+
+
+# Uncomment ldap or open_id if you want to use those authentication schemes.
+# If you choose ldap, see the additional configuration options further down.
+authentication_schemes:
+  - "database"
+  # - "ldap"
+  # - "open_id"
+  # - "cas"
+
+
+#set the prefered authentication scheme to display first on the login page
+#prefered_auth: database
+
+
+# Uncomment if using cas
+#cas_server: "https://cas.demo.edu/cas"
+#cas_server_logout: "https://cas.demo.edu/cas/logout"
+
+
+
+# You''ll probably want to change this to the time zone of the computer where Tracks is running
+# run rake time:zones:local have Rails suggest time zone names on your system
+time_zone: "Berlin"
+
+
+# setting this to true will make the cookies only available over HTTPS
+secure_cookies: false
+
+
+# Uncomment if you want to dispatch todos that come from email based on the To: address
+# rather than the From: address.
+# email_dispatch: 'to'
+
+
+# Set this to the subdirectory you're hosting tracks in and uncomment if applicable
+# NOTE: you will also need to set up your web server to deal with the relative
+# URL. Mongrel, for example, has a --prefix option.
+# subdir: "/tracks"
+
+# Set to true to allow anyone to sign up for a username.
+open_signups: false
+
+# Only needed if ldap is included in authentication_schemes
+# ldap:
+#   library: 'net/ldap'
+#   servers:
+#     - 'localhost'
+#   use_ssl: false
+#   login_format: 'cn=%s,dc=example,dc=com'
