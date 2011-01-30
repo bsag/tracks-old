@@ -1,9 +1,9 @@
 development:
   adapter: mysql
-  database: database
+  database: tracks
   host: localhost
-  username: foo
-  password: bar
+  username: tracks
+  password: W7AD5ApasrvYB14r79OR
 
 test: &TEST
     adapter: sqlite3
