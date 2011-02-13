@@ -19,13 +19,16 @@ Encoding.default_external = Encoding::UTF_8 if RUBY_VERSION > "1.9"
 Rails::Initializer.run do |config|
   # Skip frameworks you're not going to use
   # config.frameworks -= [ :action_web_service, :action_mailer ]
-  config.load_paths += %W( #{RAILS_ROOT}/app/apis )
+  config.autoload_paths += %W( #{RAILS_ROOT}/app/apis )
 
   config.gem "highline"
   config.gem "RedCloth"
   config.gem "soap4r", :lib => false
   config.gem 'datanoise-actionwebservice', :lib => 'actionwebservice'
   config.gem 'sanitize'
+  config.gem 'rack', :version => '1.1.0'
+  config.gem 'will_paginate', :version => '~> 2.3.15'
+  config.gem 'has_many_polymorphs'
 
   config.action_controller.use_accept_header = true
 

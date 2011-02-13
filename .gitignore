@@ -2,8 +2,6 @@
 *.tmproj
 .dotest
 /.emacs-project
-config/database.yml
-config/site.yml
 config/deploy.rb
 db/*.sqlite3
 db/data.yml
@@ -15,8 +13,9 @@ public/stylesheets/cache
 tmp
 vendor/plugins/query_trace/
 rerun.txt
-public/javascripts/jquery-all.js
-public/javascripts/tracks.js
-public/stylesheets/all.css
+public/javascripts/jquery-cached.js
+public/javascripts/tracks-cached.js
+public/stylesheets/tracks-cached.css
 .idea
 .rvmrc
+config/database.yml

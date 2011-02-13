@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
   prepend_before_filter :login_required
   prepend_before_filter :enable_mobile_content_negotiation
-#  after_filter :set_locale
+  #  after_filter :set_locale
   after_filter :set_charset
   
   include ActionView::Helpers::TextHelper
@@ -124,20 +124,24 @@ class ApplicationController < ActionController::Base
   # config/settings.yml
   #
   def format_date(date)
-    if date
-      date_format = prefs.date_format
-      formatted_date = date.in_time_zone(prefs.time_zone).strftime("#{date_format}")
-    else
-      formatted_date = ''
-    end
-    formatted_date
+    return date ? date.in_time_zone(prefs.time_zone).strftime("#{prefs.date_format}") : ''
   end
-
 
   def for_autocomplete(coll, substr)
-    filtered = coll.find_all{|item| item.name.downcase.include? substr.downcase}
-    return filtered.map {|item| "#{item.name}|#{item.id}"}.join("\n")
+    if substr # protect agains empty request
+      filtered = coll.find_all{|item| item.name.downcase.include? substr.downcase}
+      json_elems = "[{" + filtered.map {|item| "\"value\" : \"#{item.name}\", \"id\" : \"#{item.id}\""}.join("},{") + "}]"
+      return json_elems == "[{}]" ? "" : json_elems
+    else
+      return ""
+    end
   end
+
+  def auto_complete_result2(entries, phrase = nil)
+    json_elems = "[{" + entries.map {|item| "\"id\" : \"#{item.id}\", \"value\" : \"#{item.specification()}\""}.join("},{") + "}]"
+    return json_elems == "[{}]" ? "" : json_elems
+  end
+
 
   # Uses RedCloth to transform text using either Textile or Markdown Need to
   # require redcloth above RedCloth 3.0 or greater is needed to use Markdown,
