@@ -1,4 +1,0 @@
-unless @due_tickles.empty?
-  #TODO: why not just add the new items here in addition to notifying?
-  page.notify :notice, t('todos.tickler_items_due', :count => @due_tickles.length), 5.0
-end

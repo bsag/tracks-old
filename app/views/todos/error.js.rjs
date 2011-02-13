@@ -1,1 +1,0 @@
-page.notify :error, @error_message || t('common.server_error'), 8.0
