@@ -923,7 +923,7 @@ function setup_periodic_check(url_for_check, interval_in_sec, method) {
             $.ajax(settings);
         },
         interval_in_sec*1000
-    );
+        );
 }
 
 function update_order(event, ui){
@@ -984,7 +984,7 @@ function enable_rich_interaction(){
         'changeYear': true,
         'maxDate': '+5y',
         'minDate': '-1y',
-        'showAnim': 'fold'
+        'showAnim': '' /* leave empty, see #1117 */
     });
 
     /* Autocomplete */
@@ -1189,8 +1189,6 @@ $(document).ready(function() {
     TracksPages.setup_nifty_corners();
 
     TodoItemsContainer.setup_container_toggles();
-
-    $.datepicker.setDefaults($.datepicker.regional[i18n_locale]);
 
     /* enable page specific behavior */
     $([ 'IntegrationsPage', 'NotesPage', 'ProjectListPage', 'ContextListPage',
