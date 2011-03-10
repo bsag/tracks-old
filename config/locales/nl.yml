@@ -1,88 +1,5 @@
 --- 
 nl: 
-  common: 
-    actions: Acties
-    back: Terug
-    add: Toevoegen
-    go_back: Ga terug
-    logout: Log uit
-    none: Geen
-    cancel: Annuleer
-    optional: optioneel
-    notes: Notities
-    forum: Forum
-    server_error: Een fout heeft op de server plaatsgevonden
-    action: Actie
-    projects: Projecten
-    project: Project
-    contribute: Bijdragen
-    ok: Ok
-    website: Website
-    numbered_step: Stap %{number}
-    context: Context
-    sort: 
-      by_task_count_title: Sorteer op aantal acties
-      by_task_count_title_confirm: Weet u zeker dat u deze projecten alphabetisch wilt sorteren? Dat zal de huidige sorteervolgorde aanpassen.
-      alphabetically: Alphabetisch
-      sort: Sorteer
-      alphabetically_title: Sorteer projecten alphabetisch
-      alphabetically_confirm: Weet u zeker dat u deze projecten alphabetisch wilt sorteren? Dat zal de huidige sorteervolgorde aanpassen.
-      by_task_count: Bij aantal acties
-    create: Maken
-    description: Beschrijving
-    errors_with_fields: Er waren problemen met de volgende velden
-    contexts: Contexten
-    drag_handle: SLEEP
-    update: Bijwerken
-    bugs: Fouten
-    wiki: Wiki
-    ajaxError: Er is een fout opgetreden bij het ophalen van gegevens van de server
-    email: E-mail
-    search: Zoeken
-  layouts: 
-    toggle_notes: Toggle notities
-    next_actions_rss_feed: RSS-feed van de acties
-    toggle_notes_title: Toggle alle notities
-    mobile_navigation: 
-      logout: Afmelden
-      feeds: Feeds
-      new_action: 0-Nieuwe actie
-      starred: 4-Ster
-      projects: 3-Projecten
-      tickler: Tickler
-      contexts: 2-Contexten
-      home: 1-Start
-    navigation: 
-      recurring_todos: Terugkerende todos
-      manage_users_title: Toevoegen of verwijderen gebruikers
-      api_docs: REST API Docs
-      feeds: Feeds
-      stats: Statistieken
-      starred: Ster
-      notes_title: Toon alle notities
-      tickler_title: Tickler
-      manage_users: Beheren gebruikers
-      preferences: Voorkeuren
-      export_title: Import en export van gegevens
-      integrations_: Integreer Tracks
-      feeds_title: Zie een lijst met beschikbare feeds
-      calendar_title: Kalender met acties met deadline
-      recurring_todos_title: Beheren terugkerende acties
-      completed_tasks: Gereed
-      stats_title: Zie je statistieken
-      tickler: Tickler
-      home_title: Start
-      starred_title: Zie je ster acties
-      organize: Organiseer
-      view: Bekijk
-      completed_tasks_title: Afgerond
-      export: Export
-      home: Start
-      contexts_title: Contexten
-      projects_title: Projecten
-      preferences_title: Toon mijn voorkeuren
-      calendar: Agenda
-      search: Zoeken in alle items
   number: 
     format: 
       separator: ","
@@ -112,6 +29,89 @@ nl:
     applescript_next_action_prompt: "Omschrijving van de actie:"
     applescript_success_before_id: Nieuwe actie met ID
     applescript_success_after_id: gemaakt
+  common: 
+    actions: Acties
+    back: Terug
+    add: Toevoegen
+    logout: Log uit
+    go_back: Ga terug
+    none: Geen
+    cancel: Annuleer
+    optional: optioneel
+    notes: Notities
+    server_error: Een fout heeft op de server plaatsgevonden
+    forum: Forum
+    action: Actie
+    projects: Projecten
+    project: Project
+    ok: Ok
+    contribute: Bijdragen
+    website: Website
+    numbered_step: Stap %{number}
+    errors_with_fields: Er waren problemen met de volgende velden
+    context: Context
+    sort: 
+      by_task_count_title: Sorteer op aantal acties
+      by_task_count_title_confirm: Weet u zeker dat u deze projecten alphabetisch wilt sorteren? Dat zal de huidige sorteervolgorde aanpassen.
+      alphabetically: Alphabetisch
+      alphabetically_title: Sorteer projecten alphabetisch
+      sort: Sorteer
+      alphabetically_confirm: Weet u zeker dat u deze projecten alphabetisch wilt sorteren? Dat zal de huidige sorteervolgorde aanpassen.
+      by_task_count: Bij aantal acties
+    drag_handle: SLEEP
+    create: Maken
+    description: Beschrijving
+    contexts: Contexten
+    wiki: Wiki
+    update: Bijwerken
+    bugs: Fouten
+    email: E-mail
+    ajaxError: Er is een fout opgetreden bij het ophalen van gegevens van de server
+    search: Zoeken
+  layouts: 
+    toggle_notes: Toggle notities
+    next_actions_rss_feed: RSS-feed van de acties
+    toggle_notes_title: Toggle alle notities
+    mobile_navigation: 
+      logout: Afmelden
+      feeds: Feeds
+      new_action: 0-Nieuwe actie
+      starred: 4-Ster
+      projects: 3-Projecten
+      tickler: Tickler
+      contexts: 2-Contexten
+      home: 1-Start
+    navigation: 
+      recurring_todos: Terugkerende todos
+      manage_users_title: Toevoegen of verwijderen gebruikers
+      api_docs: REST API Docs
+      feeds: Feeds
+      stats: Statistieken
+      starred: Ster
+      notes_title: Toon alle notities
+      tickler_title: Tickler
+      manage_users: Beheren gebruikers
+      export_title: Import en export van gegevens
+      integrations_: Integreer Tracks
+      preferences: Voorkeuren
+      calendar_title: Kalender met acties met deadline
+      feeds_title: Zie een lijst met beschikbare feeds
+      home_title: Start
+      starred_title: Zie je ster acties
+      recurring_todos_title: Beheren terugkerende acties
+      tickler: Tickler
+      completed_tasks: Gereed
+      stats_title: Zie je statistieken
+      view: Bekijk
+      organize: Organiseer
+      completed_tasks_title: Afgerond
+      export: Export
+      contexts_title: Contexten
+      home: Start
+      projects_title: Projecten
+      preferences_title: Toon mijn voorkeuren
+      calendar: Agenda
+      search: Zoeken in alle items
   models: 
     project: 
       feed_title: Tracks Projecten
@@ -151,23 +151,23 @@ nl:
         date_format: Datum formaat
         show_hidden_contexts_in_sidebar: Toon verborgen contexten in sidebar
         mobile_todos_per_page: Acties per pagina (mobiel)
-        staleness_starts: Begin van markeren openstaande actie
-        verbose_action_descriptors: Context en project uitschrijven in actielijst
         sms_context: Standaard context voor email
+        verbose_action_descriptors: Context en project uitschrijven in actielijst
+        staleness_starts: Begin van markeren openstaande actie
         title_date_format: Datum formaat in titel
         show_number_completed: Aantal te tonen afgeronde acties
         refresh: Ververs interval (in minuten)
         week_starts: Week start op
+        due_style: Deadline stijl
         time_zone: Tijdzone
         locale: Taal
-        due_style: Deadline stijl
-        show_project_on_todo_done: Ga naar project pagina wanneer actie gereed is
         sms_email: Van email
+        show_project_on_todo_done: Ga naar project pagina wanneer actie gereed is
         show_completed_projects_in_sidebar: Toon afgeronde projecten in sidebar
     errors: 
       messages: 
-        record_invalid: "Validatie mislukt: %{errors}"
         greater_than_or_equal_to: moet groter of gelijk zijn aan %{count}
+        record_invalid: "Validatie mislukt: %{errors}"
         confirmation: komt niet overeen met de configuratie
         less_than_or_equal_to: moet kleiner of gelijk zijn aan %{count}
         blank: mag niet leeg zijn
@@ -201,52 +201,49 @@ nl:
       full_messages: 
         format: "%{attribute} %{message}"
   stats: 
-    tag_cloud_description: Deze tag cloud bevat tags van alle acties (afgerond, niet voltooid, zichtbaar en / of verborgen)
-    tag_cloud_90days_title: Tag cloud met acties in afgelopen 90 dagen
     totals_active_project_count: Van deze zijn %{count} actieve projecten
     tag_cloud_title: Tag Cloud voor alle acties
+    tag_cloud_description: Deze tag cloud bevat tags van alle acties (afgerond, niet voltooid, zichtbaar en / of verborgen)
+    tag_cloud_90days_title: Tag cloud met acties in afgelopen 90 dagen
     totals_first_action: Sinds uw eerste actie op %{date}
     actions_avg_completion_time: Van al uw afgeronde acties, de gemiddelde tijd dat dit in beslag nam is %{count} dagen.
     actions_last_year_legend: 
       number_of_actions: Aantal acties
       months_ago: Maanden geleden
-    totals_deferred_actions: waarvan %{count} uitgestelde acties in de tickler zijn
-    top10_longrunning: Top 10 langstlopende projecten
     actions_dow_30days_title: Dag van de week (laatste 30 dagen)
     current_running_time_of_incomplete_visible_actions: Huidige looptijd van onvolledige zichtbare acties
-    legend: 
-      actions: Acties
-      number_of_days: Aantal dagen geleden
-      number_of_actions: Aantal acties
-      day_of_week: Dag van de week
-      running_time: Looptijd van een actie (weken)
-      percentage: Percentage
-      months_ago: Maanden geleden
     running_time_legend: 
       actions: Acties
       percentage: Percentage
       weeks: Looptijd van een actie (weken). Klik op een balk voor meer info
     totals_action_count: u heeft een totaal van %{count} acties
-    totals_unique_tags: Van deze tags zijn %{count} uniek.
+    legend: 
+      number_of_days: Aantal dagen geleden
+      actions: Acties
+      number_of_actions: Aantal acties
+      day_of_week: Dag van de week
+      running_time: Looptijd van een actie (weken)
+      percentage: Percentage
+      months_ago: Maanden geleden
+    totals_deferred_actions: waarvan %{count} uitgestelde acties in de tickler zijn
+    top10_longrunning: Top 10 langstlopende projecten
     actions_avg_completed_30days: en voltooide een gemiddelde van %{count} acties per dag.
     top5_contexts: Top 5 contexten
     actions_lastyear_title: Acties in de afgelopen 12 maanden
     totals_actions_completed: "%{count} van deze zijn voltooid."
     totals_incomplete_actions: U heeft %{count} onvolledige acties
-    actions_last_year: Acties in de afgelopen jaren
-    totals_context_count: U heeft %{count} contexten.
+    totals_unique_tags: Van deze tags zijn %{count} uniek.
     totals_visible_context_count: Van deze zijn %{count} zichtbare contexten
     totals_blocked_actions: "%{count} zijn afhankelijk van de voltooiing van hun acties."
     action_completion_time_title: Doorlooptijd (alle voltooide acties)
-    totals_project_count: U heeft %{count} projecten.
+    actions_last_year: Acties in de afgelopen jaren
+    totals_context_count: U heeft %{count} contexten.
     actions_min_max_completion_days: De max-/minimum dagen tot voltooiing is %{min}/%{max}.
     actions_min_completion_time: De minimale tijd tot afronding is %{time}.
-    tags: Tags
     no_tags_available: geen tags beschikbaar
     actions_day_of_week_title: Dag van de week (alle acties)
-    more_stats_will_appear: Meer statistieken zullen hier verschijnen zodra u acties hebt toegevoegd.
-    top5_visible_contexts_with_incomplete_actions: Top 5 zichtbare contexten met onvolledige acties
-    actions_further: en verder
+    tags: Tags
+    totals_project_count: U heeft %{count} projecten.
     tod30: Tijd van de dag (laatste 30 dagen)
     tag_cloud_90days_description: Deze tag cloud bevat  tags van acties die zijn gemaakt of voltooid in de afgelopen 90 dagen.
     running_time_all: Huidige looptijd van alle onvolledige acties
@@ -254,9 +251,9 @@ nl:
     time_of_day: Tijd van de dag (alle acties)
     actions_30days_title: Acties in de afgelopen 30 dagen
     totals_hidden_project_count: "%{count} zijn verborgen"
-    spread_of_actions_for_all_context: Verdeling van acties voor alle contexten
-    actions_avg_created: In de afgelopen 12 maanden heeft u gemiddeld% {count} acties aangemaakt
-    click_to_show_actions_from_week: Klik %{link} om de acties van week %{week} en verder te zien.
+    more_stats_will_appear: Meer statistieken zullen hier verschijnen zodra u acties hebt toegevoegd.
+    top5_visible_contexts_with_incomplete_actions: Top 5 zichtbare contexten met onvolledige acties
+    actions_further: en verder
     other_actions_label: (anderen)
     totals_completed_project_count: en %{count} zijn afgeronde projecten.
     click_to_return: Klik %{link} om terug te keren naar de statistieken pagina.
@@ -264,13 +261,16 @@ nl:
     actions_selected_from_week: Gekozen acties van week
     top10_projects: Top 10 projecten
     spread_of_running_actions_for_visible_contexts: Verdeling van actieve acties voor zichtbare contexten
-    totals_hidden_context_count: en %{count} zijn verborgen contexten.
-    actions_avg_completed: en voltooide een gemiddelde van %{count} acties per maand.
+    spread_of_actions_for_all_context: Verdeling van acties voor alle contexten
+    actions_avg_created: In de afgelopen 12 maanden heeft u gemiddeld% {count} acties aangemaakt
+    click_to_show_actions_from_week: Klik %{link} om de acties van week %{week} en verder te zien.
     totals: Totalen
     time_of_day_legend: 
       number_of_actions: Aantal acties
       time_of_day: Tijd van de dag
     click_to_return_link: hier
+    totals_hidden_context_count: en %{count} zijn verborgen contexten.
+    actions_avg_completed: en voltooide een gemiddelde van %{count} acties per maand.
     labels: 
       month_avg_completed: "%{months} gem afgerond per maand"
       completed: Afgerond
@@ -284,11 +284,11 @@ nl:
       actions: Acties
       running_time: Looptijd van een actie (weken). Klik op een balk voor meer info
       percentage: Percentage
+    action_selection_title: "TRACKS:: Actie selectie"
+    actions_actions_avg_created_30days: In de afgelopen 30 dagen heeft u gemiddeld% {count} acties gemaakt
     tod30_legend: 
       number_of_actions: Aantal acties
       time_of_day: Tijd van de dag
-    action_selection_title: "TRACKS:: Actie selectie"
-    actions_actions_avg_created_30days: In de afgelopen 30 dagen heeft u gemiddeld% {count} acties gemaakt
   todos: 
     show_from: Toon vanaf
     error_starring_recurring: Kon niet de ster van deze terugkerende actie niet omgezetten \'%{description}\'
@@ -314,14 +314,14 @@ nl:
     list_incomplete_next_actions: Toon onvoltooide acties
     action_deleted_success: Actie succesvol verwijderd
     tags: Tags (gescheiden door komma's)
+    delete_recurring_action_title: Verwijder de terugkerende actie
     new_related_todo_created: Een nieuwe actie is toegevoegd, die behoort bij deze terugkerende todo
     context_changed: Context veranderd in '%{name}'
-    mobile_todos_page_title: Alle acties
     add_another_dependency: Nog een afhankelijkheid toevoegen
-    delete_recurring_action_title: Verwijder de terugkerende actie
+    mobile_todos_page_title: Alle acties
+    next_action_needed: U dient ten minste een actie in te vullen
     removed_predecessor: "'%{successor}' is verwijderd als afhankelijkheid van '%{predecessor}'."
     recurring_actions_title: TRACKS::Terugkerende acties
-    next_action_needed: U dient ten minste een actie in te vullen
     action_saved: Actie opgeslagen
     scheduled_overdue: Gepland om %{days} dagen geleden te tonen
     action_deleted_error: Verwijderen van de actie is mislukt
@@ -343,7 +343,7 @@ nl:
     no_recurring_todos: Momenteel zijn er geen terugkerende acties
     error_completing_todo: Er was een fout bij het voltooien / activeren van de terugkerende actie '%{description}'
     convert_to_project: Maak project
-    no_deferred_pending_actions: Momenteel zijn er geen uitgestelde of in wachtende acties
+    no_deferred_pending_actions: Momenteel zijn er geen uitgestelde of wachtende acties
     completed_last_day: Voltooid in de laatste 24 uur
     delete_recurring_action_confirm: Weet u zeker dat u wilt de terugkerende actie '%{description}' wilt verwijderen?
     show_in_days: Toon over %{days} dagen
@@ -354,6 +354,7 @@ nl:
     edit: Bewerken
     pending: Wachtend
     completed_actions_with: Afgeronde acties met de tag %{tag_name}
+    deleted_success: De actie werd met succes verwijderd.
     completed_tasks_title: TRACKS::Voltooide taken
     feed_title_in_project: In het project '%{project}'
     clear_due_date: Maak deadline leeg
@@ -373,6 +374,7 @@ nl:
     calendar_page_title: TRACKS::Agenda
     in_hidden_state: in verborgen toestand
     show_today: Toon vandaag
+    no_actions_found_title: Geen acties gevonden
     completed_last_x_days: Voltooid in de laatste %{count} dagen
     no_actions_with: Momenteel zijn er geen onvoltooide acties met de tag '%{tag_name}'
     defer_x_days: 
@@ -380,7 +382,7 @@ nl:
       other: "%{count} dagen uitstellen"
     added_new_next_action_singular: Nieuwe actie toegevoegd
     no_completed_actions: Momenteel zijn er geen voltooide acties.
-    deferred_pending_actions: Uitgestelde/wachtende van acties
+    deferred_pending_actions: Uitgestelde/wachtende acties
     has_x_pending: 
       one: Heeft een wachtende actie
       other: Heeft %{count} wachtende acties
@@ -412,19 +414,19 @@ nl:
       due_today: Deadline vandaag
       due_next_month_and_later: Deadline in %{month} en later
       no_actions_due_after_this_month: Geen acties met deadline na deze maand
-      no_actions_due_this_month: Geen acties met deadline in de rest van deze maand
       due_this_month: Deadline in rest van %{month}
+      no_actions_due_this_month: Geen acties met deadline in de rest van deze maand
     recurrence: 
-      ends_on_date: Eindigt op %{date}
       every_work_day: Elke werkdag
       ends_on_number_times: Eindigt na %{number} keer
+      ends_on_date: Eindigt op %{date}
       recurrence_on_due_date: de datum dat deadline van de actie is
       weekly_options: Instellingen voor de wekelijkse terugkerende acties
       weekly: Wekelijks
       monthly_options: Instellingen voor maandelijks terugkerende acties
+      monthly: Maandelijks
       starts_on: Begint op
       daily_options: Instellingen voor dagelijks terugkerende acties
-      monthly: Maandelijks
       daily: Dagelijks
       show_option_always: altijd
       recurrence_on_options: Stel herhaling in op
@@ -433,12 +435,12 @@ nl:
       ends_on: Eindigt op
       weekly_every_number_week: Herhaalt elke %{number} weken op
       show_options: Toon de actie
-      from_tickler: de datum dat de actie uit de tickler komt (geen deadline ingesteld)
-      no_end_date: Geen einddatum
-      yearly_every_xth_day: De %{day} %{day_of_week} van %{month}
       day_x_on_every_x_month: Dag %{dag} op elke %{month} maand
+      yearly_every_xth_day: De %{day} %{day_of_week} van %{month}
       yearly_options: Instellingen voor jaarlijks terugkerende acties
       show_days_before: "%{days} dagen v\xC3\xB3\xC3\xB3r de deadline van actie"
+      from_tickler: de datum dat de actie uit de tickler komt (geen deadline ingesteld)
+      no_end_date: Geen einddatum
       monthly_every_xth_day: De %{dag} %{day_of_week} van elke %{month} maand
       yearly: Jaarlijks
     tagged_page_title: TRACKS::Tagged met '%{tag_name}'
@@ -446,9 +448,9 @@ nl:
     added_dependency: "%{dependency} als afhankelijkheid toegevoegd."
     no_deferred_actions: Momenteel zijn er geen uitgestelde acties.
     recurrence_completed: Er is geen volgende actie na de terugkerende actie die u zojuist hebt voltooid. De herhaling is voltooid
-    due: Deadline
-    no_actions_found: Geen acties gevonden
+    no_actions_found: Momenteel zijn er geen onafgeronde acties.
     in_pending_state: in wachtende toestand
+    due: Deadline
     action_marked_complete_error: De actie <strong>'%{description}'</strong> is niet gemarkeerd als <strong>%{completed} vanwege een fout op de server.</strong>
     depends_on_separate_with_commas: Afhankelijk van (gescheiden door komma's)
     recurring_action_saved: Terugkerende actie opgeslagen
@@ -464,12 +466,12 @@ nl:
     no_incomplete_actions: Er zijn geen onvoltooide acties
     add_new_recurring: Voeg een nieuwe terugkerende actie toe
   notes: 
-    delete_item_title: Verwijder item
     delete_note_title: Verwijder de notitie '%{id}'
     delete_confirmation: Weet u zeker dat u de notitie '%{id}' wilt verwijderen?
-    note_link_title: Toon notitie %{id}
+    delete_item_title: Verwijder item
     show_note_title: Toon notitie
     deleted_note: Verwijder notitie '%{id}'
+    note_link_title: Toon notitie %{id}
     note_location_link: "In:"
     edit_item_title: Item bewerken
     note_header: Notitie %{id}
@@ -495,60 +497,71 @@ nl:
     active: Actief
     hidden: Verborgen
   preferences: 
-    change_identity_url: Verander uw Identity URL
     open_id_url: Uw OpenID URL is
     staleness_starts_after: Ophopen begint na %{days} dagen
+    change_identity_url: Verander uw Identity URL
     page_title: "TRACKS:: Voorkeuren"
     change_password: Wijzig uw wachtwoord
     token_description: Token (voor feeds en API gebruik)
     title: Uw voorkeuren
     show_number_completed: Toon %{number} voltooide items
-    edit_preferences: Voorkeuren bewerken
     page_title_edit: "TRACKS:: Voorkeuren bewerken"
+    edit_preferences: Voorkeuren bewerken
     generate_new_token: Genereer een nieuwe token
     sms_context_none: Geen
     token_header: Uw token
+    change_authentication_type: Verander uw authenticatietype
     authentication_header: Uw authenticatie
     current_authentication_type: Uw authenticatietype is %{auth_type}
-    change_authentication_type: Verander uw authenticatietype
     generate_new_token_confirm: Weet u dit zeker? Het genereren van een nieuw token zal de bestaande te vervangen en dit zal het extern gebruiken van de oude token laten mislukken.
   projects: 
     default_tags_removed_notice: De standaard tags zijn verwijderd
     default_context_set: Stel project standaard context in op %{default_context}
     deferred_actions: Uitgestelde acties voor dit project
     edit_project_title: Bewerk project
-    hide_form: Verberg formulier
+    was_marked_hidden: is gemarkeerd als verborgen
+    no_actions_in_project: Momenteel zijn er geen onafgeronde acties in dit project
     page_title: "TRACKS:: Project: %{project}"
-    to_new_project_page: Ga naar de nieuwe projectpagina
+    hide_form: Verberg formulier
     no_notes_attached: Momenteel zijn er geen notities toegevoegd aan dit project
     deferred_actions_empty: Er zijn geen uitgestelde acties voor dit project
     project_state: Project is %{state}.
     show_form_title: Maak een nieuw project
-    todos_append: in dit project
+    this_project: Dit project
+    to_new_project_page: Ga naar de nieuwe projectpagina
     notes: Notities
+    todos_append: in dit project
     notes_empty: Er zijn geen notities voor dit project
     no_projects: Momenteel zijn er geen projecten
     hide_form_title: Verberg nieuw project formulier
-    completed_actions_empty: Er zijn nog geen afgeronde acties voor dit project
+    with_no_default_context: zonder standaard context
     delete_project: Project verwijderen
-    delete_project_confirmation: Weet u zeker dat u wilt het project '%{name} wilt verwijderen?
+    completed_actions_empty: Er zijn nog geen afgeronde acties voor dit project
+    actions_in_project_title: Acties in dit project
     show_form: Toevoegen van een project
-    list_projects: "TRACKS:: Overzicht van projecten"
+    delete_project_confirmation: Weet u zeker dat u wilt het project '%{name} wilt verwijderen?
+    with_default_context: met een standaard context  '%{context_name}'
     add_project: Voeg project toe
     set_default_tags_notice: Stel project standaard tags in op %{default_tags}
     add_note: Een notitie toevoegen
     project_saved_status: Project opgeslagen
+    is_active: is actief
     settings: Instellingen
     completed_projects: Voltooide projecten
-    hidden_projects: Verborgen projecten
+    with_default_tags: en met '%{tags}' als de standaard tags
+    list_projects: "TRACKS:: Overzicht van projecten"
     delete_project_title: Verwijder het project
-    add_note_submit: Notitie toevoegen
+    hidden_projects: Verborgen projecten
+    was_marked_complete: is gemarkeerd als voltooid
     default_context_removed: Standaard context verwijderd
     completed_actions: Afgeronde acties voor dit project
-    default_context: De standaard context voor dit project is %{context}
+    add_note_submit: Notitie toevoegen
     status_project_name_changed: Naam van het project werd gewijzigd
-    active_projects: Actieve projecten
+    edit_project_settings: Bewerk project instellingen
     no_default_context: Dit project heeft geen standaard context
+    with_no_default_tags: en zonder standaard tags
+    default_context: De standaard context voor dit project is %{context}
+    active_projects: Actieve projecten
     state: Dit project is %{state}
   date: 
     month_names: 
@@ -565,10 +578,6 @@ nl:
     - Oktober
     - November
     - December
-    order: 
-    - :day
-    - :month
-    - :year
     abbr_day_names: 
     - Zo
     - Ma
@@ -577,6 +586,10 @@ nl:
     - Do
     - Vr
     - Za
+    order: 
+    - :day
+    - :month
+    - :year
     formats: 
       only_day: "%e"
       default: "%d-%m-%Y"
@@ -611,6 +624,8 @@ nl:
       two_words_connector: en
     select: 
       prompt: Selecteer
+  footer: 
+    send_feedback: Stuur reactie op %{version}
   dates: 
     month_names: 
     - Januari
@@ -635,27 +650,18 @@ nl:
     - Zaterdag
   shared: 
     multiple_next_actions: Meerdere acties (een op elke regel)
-    hide_form: Verberg formulier
     toggle_single: Voeg een actie toe
+    hide_form: Verberg formulier
     add_action: Actie toevoegen
     add_actions: Toevoegen acties
     tags_for_all_actions: Tags voor alle acties (scheiden met een komma)
-    context_for_all_actions: Context voor alle acties
     toggle_multi: Voeg meerdere acties toe
     toggle_single_title: Voeg een nieuwe actie toe
     project_for_all_actions: Project voor alle acties
+    context_for_all_actions: Context voor alle acties
     separate_tags_with_commas: gescheiden door komma's
     toggle_multi_title: Toggle single / multi actie formulier
     hide_action_form_title: Verberg nieuwe actie formulier
-  footer: 
-    send_feedback: Stuur reactie op %{version}
-  sidebar: 
-    list_name_active_contexts: Actieve contexten
-    list_name_active_projects: Actieve projecten
-    list_empty: Geen
-    list_name_completed_projects: Voltooide projecten
-    list_name_hidden_projects: Verborgen projecten
-    list_name_hidden_contexts: Verborgen contexten
   users: 
     openid_url_verified: Je hebt %{url} met succes geverifieerd als je identiteit en uw authenticatie type OpenID opgeslagen.
     destroy_successful: Gebruiker %{login} met succes verwijderd
@@ -664,9 +670,9 @@ nl:
     first_user_heading: "Welkom bij TRACKS. Om te beginnen, maak dan een admin account:"
     successfully_deleted_user: Succesvol gebruiker %{username} verwijderd
     failed_to_delete_user: Mislukt de gebruiker %{username} te verwijderen
-    total_projects: Totaal aantal projecten
     signup_successful: Aanmelding succesvol voor gebruiker %{username}.
     new_token_generated: Nieuwe token met succes gegenereerd
+    total_projects: Totaal aantal projecten
     no_signups_title: "TRACKS:: Geen nieuwe aanmeldingen"
     user_created: Gebruiker aangemaakt.
     change_password_submit: Wachtwoord wijzigen
@@ -679,23 +685,23 @@ nl:
     auth_type_updated: Authenticatietype bijgewerkt.
     total_actions: Totaal aanal acties
     desired_login: Gewenste login
-    password_confirmation_label: Bevestig wachtwoord
     destroy_error: Er is een fout opgetreden bij het verwijderen van de gebruiker '%{login}'
     choose_password: Kies een wachtwoord
     change_password_title: TRACKS::Wachtwoord wijzigen
     change_auth_type_title: TRACKS::Wijzig authenticatietype
     change_password_prompt: Voer uw nieuwe wachtwoord in de onderstaande velden in en kies 'Wachtwoord wijzigen' om uw huidige wachtwoord met uw nieuwe te vervangen.
+    password_confirmation_label: Bevestig wachtwoord
     label_auth_type: Authenticatietype
     new_password_label: Nieuw wachtwoord
     register_with_cas: Met uw CAS gebruikersnaam
-    destroy_user: Verwijder de gebruiker
     total_users_count: Je hebt een totaal van %{count} gebruikers
     new_user_title: "TRACKS:: Aanmelden als de admin gebruiker"
+    destroy_user: Verwijder de gebruiker
     destroy_confirmation: "Waarschuwing: dit zal de gebruiker '%{login} verwijderen met al zijn acties, contexten, projecten en notities. Weet u zeker dat u wilt doorgaan?"
     signup_new_user: Registreer nieuwe gebruiker
     identity_url: Identiteit URL
-    auth_change_submit: Wijzigen authenticatietype
     change_authentication_type: Wijzigen authenticatietype
+    auth_change_submit: Wijzigen authenticatietype
     openid_ok_pref_failed: Je hebt succesvol de %{url} geverifieerd als je identiteit, maar er was een probleem met het opslaan van uw authenticatie voorkeuren.
     total_notes: Totaal aantal notities
     select_authentication_type: Selecteer uw nieuwe authenticatie type en klik op 'Wijzigen authenticatietype' om uw huidige instellingen te vervangen.
@@ -705,11 +711,11 @@ nl:
     show_form_title: Voeg een context toe
     delete_context: Verwijder context
     delete_context_confirmation: Weet u zeker dat u de context '%{name}' wilt verwijderen? Merk op dat dit ook alle (herhalende) acties in deze context zal verwijderen!
-    edit_context: Bewerk context
     hide_form_title: "Verberg formulier voor nieuwe context "
-    context_hide: Verberg van de start pagina?
+    edit_context: Bewerk context
     hidden_contexts: Verborgen contexten
     no_contexts_active: Momenteel zijn er geen actieve contexten
+    context_hide: Verberg van de start pagina?
     add_context: Context toevoegen
     visible_contexts: Zichtbare contexten
     save_status_message: Context bewaard
@@ -718,11 +724,11 @@ nl:
     context_name: Context naam
     status_active: Context is actief
     new_context_post: "' zal ook gemaakt worden. Weet u dit zeker?"
-    context_deleted: De context '%{name}' is verwijderd
     no_contexts_hidden: Momenteel zijn er geen verborgen contexten
     new_context_pre: Nieuwe context '
     no_actions: Momenteel zijn er geen onafgeronde acties in deze context
     last_completed_in_context: in deze context (laatste %{number})
+    context_deleted: De context '%{name}' is verwijderd
     status_hidden: Context is verborgen
   feedlist: 
     actions_due_today: Acties die vandaag of eerder af moeten
@@ -748,6 +754,13 @@ nl:
     all_actions: Alle acties
     actions_completed_last_week: Acties afgerond in de afgelopen 7 dagen
     project_centric: Feeds voor onafgeronde acties in een specifiek project
+  sidebar: 
+    list_name_active_contexts: Actieve contexten
+    list_name_active_projects: Actieve projecten
+    list_empty: Geen
+    list_name_completed_projects: Voltooide projecten
+    list_name_hidden_projects: Verborgen projecten
+    list_name_hidden_contexts: Verborgen contexten
   datetime: 
     prompts: 
       minute: Minuut
@@ -795,14 +808,14 @@ nl:
       half_a_minute: halve minuut
   login: 
     user_no_expiry: Blijf ingelogd
-    login_cas: Ga naar het CAS
     sign_in: Meld aan
+    login_cas: Ga naar het CAS
     openid_identity_url_not_found: Sorry, geen gebruiker met die identiteit URL bestaat (% {identity_url})
-    successful_with_session_info: "Login succesvol:"
     please_login: Log in om Tracks te gebruiken
     cas_logged_in_greeting: Hallo, % {username}! U bent geauthenticeerd.
     cas_no_user_found: Hallo,% {username}! Je hebt nog geen account op Tracks.
     cas_login: CAS Inloggen
+    successful_with_session_info: "Login succesvol:"
     cas_username_not_found: Sorry, geen gebruiker met die CAS gebruikersnaam bestaat (% {username})
     mobile_use_openid: ... if inloggen met een OpenID
     cas_create_account: Als u willen vragen ga hier om %{signup_link}
@@ -810,9 +823,9 @@ nl:
     cas_signup_link: Aanvragen account
     session_will_not_expire: sessie zal niet verlopen.
     successful: Succesvol aangemeld. Welkom terug!
-    session_will_expire: sessie zal verlopen na %{hours} u(u)r(en) van inactiviteit.
     option_separator: of,
     session_time_out: Sessie is verlopen. Gelieve %{link}
+    session_will_expire: sessie zal verlopen na %{hours} u(u)r(en) van inactiviteit.
     login_standard: Ga terug naar de standaard login
     log_in_again: log opnieuw in.
     logged_out: Je bent afgemeld bij Tracks.
@@ -821,7 +834,7 @@ nl:
   search: 
     contexts_matching_query: Contexten passend bij zoekopdracht
     tags_matching_query: Tags passend bij zoekopdracht
-    todos_matching_query: Todos passend bij zoekopdracht
     projects_matching_query: Projecten passend bij zoekopdracht
     notes_matching_query: Notities passend bij zoekopdracht
     no_results: Uw zoekopdracht heeft geen resultaten opgeleverd.
+    todos_matching_query: Todos passend bij zoekopdracht
