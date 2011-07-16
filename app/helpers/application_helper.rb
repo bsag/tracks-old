@@ -27,33 +27,42 @@ module ApplicationHelper
   # a 'traffic light' colour code
   #
   def due_date(due)
-    if due == nil
-      return ""
-    end
+    return "" if due.nil?
 
     days = days_from_today(due)
-       
-    case days
-    when 0
-      "<a title='#{format_date(due)}'><span class=\"amber\">Due Today</span></a> "
-    when 1
-      "<a title='#{format_date(due)}'><span class=\"amber\">Due Tomorrow</span></a> "
-      # due 2-7 days away
-    when 2..7
-      if prefs.due_style == Preference.due_styles[:due_on]
-        "<a title='#{format_date(due)}'><span class=\"orange\">Due on #{due.strftime("%A")}</span></a> "
-      else
-        "<a title='#{format_date(due)}'><span class=\"orange\">Due in #{pluralize(days, 'day')}</span></a> "
-      end
-    else
-      # overdue or due very soon! sound the alarm!
-      if days < 0
-        "<a title='#{format_date(due)}'><span class=\"red\">Overdue by #{pluralize(days * -1, 'day')}</span></a> "
-      else
-        # more than a week away - relax
-        "<a title='#{format_date(due)}'><span class=\"green\">Due in #{pluralize(days, 'day')}</span></a> "
-      end
-    end
+
+    colors = ['amber','amber','orange','orange','orange','orange','orange','orange']
+    color = :red if days < 0
+    color = :green if days > 7
+    color = colors[days] if color.nil?
+    
+    return content_tag(:a, {:title => format_date(due)}) {
+      content_tag(:span, {:class => color}) {
+        case days
+        when 0
+          t('todos.next_actions_due_date.due_today')
+        when 1
+          t('todos.next_actions_due_date.due_tomorrow')
+        when 2..7
+          if prefs.due_style == Preference.due_styles[:due_on]
+            # TODO: internationalize strftime here
+            t('models.preference.due_on', :date => due.strftime("%A"))
+          else
+            t('models.preference.due_in', :days => days)
+          end
+        else
+          # overdue or due very soon! sound the alarm!
+          if days == -1
+            t('todos.next_actions_due_date.overdue_by', :days => days * -1)            
+          elsif days < -1
+            t('todos.next_actions_due_date.overdue_by_plural', :days => days * -1)
+          else
+            # more than a week away - relax
+            t('models.preference.due_in', :days => days)
+          end
+        end
+      }
+    }
   end
 
   # Check due date in comparison to today's date Flag up date appropriately with
@@ -104,11 +113,29 @@ module ApplicationHelper
   end
   
   def link_to_context(context, descriptor = sanitize(context.name))
-    link_to( descriptor, context_path(context), :title => "View context: #{context.name}" )
+    link_to( descriptor, context, :title => "View context: #{context.name}" )
   end
   
   def link_to_project(project, descriptor = sanitize(project.name))
-    link_to( descriptor, project_path(project), :title => "View project: #{project.name}" )
+    link_to( descriptor, project, :title => "View project: #{project.name}" )
+  end
+
+  def link_to_edit_project (project, descriptor = sanitize(project.name))
+    link_to(descriptor,
+      url_for({:controller => 'projects', :action => 'edit', :id => project.id}),
+      {:id => "link_edit_#{dom_id(project)}", :class => "project_edit_settings"})
+  end
+
+  def link_to_edit_context (context, descriptor = sanitize(context.name))
+    link_to(descriptor,
+      url_for({:controller => 'contexts', :action => 'edit', :id => context.id}),
+      {:id => "link_edit_#{dom_id(context)}", :class => "context_edit_settings"})
+  end
+
+  def link_to_edit_note (note, descriptor = sanitize(note.id.to_s))
+    link_to(descriptor,
+      url_for({:controller => 'notes', :action => 'edit', :id => note.id}),
+      {:id => "link_edit_#{dom_id(note)}", :class => "note_edit_settings"})
   end
   
   def link_to_project_mobile(project, accesskey, descriptor = sanitize(project.name))
@@ -128,27 +155,18 @@ module ApplicationHelper
   end
   
   def render_flash
-    render :partial => 'shared/flash', :locals => { :flash => flash }
-  end
-  
-  # Display a flash message in RJS templates Usage: page.notify :warning, "This
-  # is the message", 5.0 Puts the message into a flash of type 'warning', fades
-  # over 5 secs
-  def notify(type, message, fade_duration)
-    type = type.to_s  # symbol to string
-    page.replace 'flash', "<h4 id='flash' class='alert #{type}'>#{message}</h4>" 
-    page.visual_effect :fade, 'flash', :duration => fade_duration
+    render :partial => 'shared/flash', :object => flash 
   end
 
   def recurrence_time_span(rt)
     case rt.ends_on
     when "no_end_date"
-      return rt.start_from.nil? ? "" : "from " + format_date(rt.start_from)
+      return rt.start_from.nil? ? "" : I18n.t("todos.recurrence.pattern.from") + " " + format_date(rt.start_from)
     when "ends_on_number_of_times"
-      return "for "+rt.number_of_occurences.to_s + " times"
+      return I18n.t("todos.recurrence.pattern.times", :number => rt.number_of_occurences)
     when "ends_on_end_date"
-      starts = rt.start_from.nil? ? "" : "from " + format_date(rt.start_from)
-      ends = rt.end_date.nil? ? "" : " until " + format_date(rt.end_date)
+      starts = rt.start_from.nil? ? "" : I18n.t("todos.recurrence.pattern.from") + " " + format_date(rt.start_from)
+      ends = rt.end_date.nil? ? "" : " " + I18n.t("todos.recurrence.pattern.until") + " " + format_date(rt.end_date)
       return starts+ends
     else
       raise Exception.new, "unknown recurrence time span selection (#{rt.ends_on})"
@@ -213,4 +231,83 @@ module ApplicationHelper
     note = Sanitize.clean(note, Sanitize::Config::RELAXED)
     return note
   end
+
+  def sidebar_html_for_titled_list (list, title)
+    return content_tag(:h3, title+" (#{list.length})") +
+      content_tag(:ul, sidebar_html_for_list(list))
+  end
+
+  def sidebar_html_for_list(list)
+    if list.empty?
+      return content_tag(:li, t('sidebar.list_empty'))
+    else
+      return list.inject("") do |html, item|
+        link = (item.class == "Project") ? link_to_project( item ) : link_to_context(item)
+        html << content_tag(:li, link + " (" + count_undone_todos_phrase(item,"actions")+")")
+      end
+    end
+  end
+
+  def generate_i18n_strings
+    js = "i18n_locale='#{I18n.locale}';\n"
+    js << "i18n = new Array();\n"
+    %w{
+    shared.toggle_multi       shared.toggle_multi_title
+    shared.hide_form          shared.hide_action_form_title
+    shared.toggle_single      shared.toggle_single_title
+    projects.hide_form        projects.hide_form_title
+    projects.show_form        projects.show_form_title
+    contexts.hide_form        contexts.hide_form_title
+    contexts.show_form        contexts.show_form_title
+    contexts.new_context_pre  contexts.new_context_post
+    common.cancel             common.ok
+    common.ajaxError          todos.unresolved_dependency
+    }.each do |s|
+      js << "i18n['#{s}'] = '#{ t(s).gsub(/'/, "\\\\'") }';\n"
+    end
+    return js
+  end
+
+  def javascript_tag_for_i18n_datepicker
+    locale = I18n.locale
+    # do not include en as locale since this the available by default
+    if locale and locale != :en
+      javascript_include_tag("i18n/jquery.ui.datepicker-#{locale}.js")
+    end
+  end
+  
+  def determine_done_path
+    case @controller.controller_name
+    when "contexts"
+      done_todos_context_path(@context)
+    when "projects"
+      done_todos_project_path(@project)
+    when "todos"
+      if source_view_is(:tag)
+        done_tag_path(@tag_name)
+      else
+        done_todos_path
+      end      
+    else
+      done_todos_path
+    end
+  end
+  
+  def determine_all_done_path
+    case @controller.controller_name
+    when "contexts"
+      all_done_todos_context_path(@context)
+    when "projects"
+      all_done_todos_project_path(@project)
+    when "todos"
+      if source_view_is(:tag)
+        all_done_tag_path(@tag_name)
+      else
+        all_done_todos_path
+      end
+    else
+      all_done_todos_path
+    end
+  end
+
 end

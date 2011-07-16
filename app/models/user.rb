@@ -3,6 +3,7 @@ require 'digest/sha1'
 class User < ActiveRecord::Base
   # Virtual attribute for the unencrypted password
   attr_accessor :password
+  attr_protected :is_admin # don't allow mass-assignment for this
 
   has_many :contexts,
            :order => 'position ASC',
@@ -11,11 +12,11 @@ class User < ActiveRecord::Base
                find(params['id'] || params['context_id']) || nil
              end
              def update_positions(context_ids)
-                context_ids.each_with_index do |id, position|
+                context_ids.each_with_index {|id, position|
                   context = self.detect { |c| c.id == id.to_i }
-                  raise "Context id #{id} not associated with user id #{@user.id}." if context.nil?
+                  raise I18n.t('models.user.error_context_not_associated', :context => id, :user => @user.id) if context.nil?
                   context.update_attribute(:position, position + 1)
-                end
+                }
               end
            end
   has_many :projects,
@@ -25,11 +26,11 @@ class User < ActiveRecord::Base
                 find(params['id'] || params['project_id'])
               end
               def update_positions(project_ids)
-                project_ids.each_with_index do |id, position|
+                project_ids.each_with_index {|id, position|
                   project = self.detect { |p| p.id == id.to_i }
-                  raise "Project id #{id} not associated with user id #{@user.id}." if project.nil?
+                  raise I18n.t('models.user.error_project_not_associated', :project => id, :user => @user.id) if project.nil?
                   project.update_attribute(:position, position + 1)
-                end
+                }
               end
               def projects_in_state_by_position(state)
                   self.sort{ |a,b| a.position <=> b.position }.select{ |p| p.state == state }
@@ -58,35 +59,23 @@ class User < ActiveRecord::Base
                 self.update_positions(projects.map{ |p| p.id })
                 return projects
               end
-              def actionize(user_id, scope_conditions = {})
-                @state = scope_conditions[:state]
-                query_state = ""
-                query_state = "AND project.state = '" + @state +"' "if @state
-                projects = Project.find_by_sql([
-                    "SELECT project.id, count(todo.id) as p_count " +
-                      "FROM projects as project " +
-                      "LEFT OUTER JOIN todos as todo ON todo.project_id = project.id "+
-                      "WHERE project.user_id = ? AND NOT (todo.state='completed') " +
-                      query_state +
-                      " GROUP BY project.id ORDER by p_count DESC",user_id])
-                self.update_positions(projects.map{ |p| p.id })
-                projects = find(:all, :conditions => scope_conditions)
-                return projects
+              def actionize(scope_conditions = {})
+                todos_in_project = find(:all, :conditions => scope_conditions, :include => [:todos])
+                todos_in_project.sort!{ |x, y| -(x.todos.active.count <=> y.todos.active.count) }
+                todos_in_project.reject{ |p| p.todos.active.count > 0 }
+                sorted_project_ids = todos_in_project.map {|p| p.id}
+                
+                all_project_ids = find(:all).map {|p| p.id}
+                other_project_ids = all_project_ids - sorted_project_ids
+                
+                update_positions(sorted_project_ids + other_project_ids)
+
+                return find(:all, :conditions => scope_conditions)
               end
             end
-  has_many :active_projects,
-           :class_name => 'Project',
-           :order => 'projects.position ASC',
-           :conditions => [ 'state = ?', 'active' ]
-  has_many :active_contexts,
-           :class_name => 'Context',
-           :order => 'position ASC',
-           :conditions => [ 'hide = ?', false ]
   has_many :todos,
            :order => 'todos.completed_at DESC, todos.created_at DESC',
            :dependent => :delete_all
-  has_many :project_hidden_todos,
-           :conditions => ['(state = ? OR state = ?)', 'project_hidden', 'active']
   has_many :recurring_todos,
            :order => 'recurring_todos.completed_at DESC, recurring_todos.created_at DESC',
            :dependent => :delete_all
@@ -97,23 +86,6 @@ class User < ActiveRecord::Base
               def find_and_activate_ready
                 find(:all, :conditions => ['show_from <= ?', Time.zone.now ]).collect { |t| t.activate! }
               end
-           end
-  has_many :pending_todos,
-           :class_name => 'Todo',
-           :conditions => [ 'state = ?', 'pending' ],
-           :order => 'show_from ASC, todos.created_at DESC'
-  has_many :completed_todos,
-           :class_name => 'Todo',
-           :conditions => ['todos.state = ? AND NOT(todos.completed_at IS NULL)', 'completed'],
-           :order => 'todos.completed_at DESC',
-           :include => [ :project, :context ] do
-             def completed_within( date )
-               reject { |x| x.completed_at < date }
-             end
-
-             def completed_more_than( date )
-               reject { |x| x.completed_at > date }
-             end
            end
   has_many :notes, :order => "created_at DESC", :dependent => :delete_all
   has_one :preference, :dependent => :destroy
@@ -149,13 +121,25 @@ class User < ActiveRecord::Base
     return nil if login.blank?
     candidate = find(:first, :conditions => ["login = ?", login])
     return nil if candidate.nil?
-    return candidate if candidate.auth_type == 'database' && candidate.crypted_password == sha1(pass)
+
+    if Tracks::Config.auth_schemes.include?('database')
+      return candidate if candidate.auth_type == 'database' && candidate.crypted_password == sha1(pass)
+    end
+    
     if Tracks::Config.auth_schemes.include?('ldap')
       return candidate if candidate.auth_type == 'ldap' && SimpleLdapAuthenticator.valid?(login, pass)
     end
-    if Tracks::Config.auth_schemes.include?('cas') && candidate.auth_type.eql?("cas")
-      return candidate #because we can not auth them with out thier real password we have to settle for this
+    
+    if Tracks::Config.auth_schemes.include?('cas')
+      # because we can not auth them with out thier real password we have to settle for this
+      return candidate if candidate.auth_type.eql?("cas")
     end
+    
+    if Tracks::Config.auth_schemes.include?('open_id')
+      # hope the user enters the correct data
+      return candidate if candidate.auth_type.eql?("open_id")
+    end
+    
     return nil
   end
   
@@ -251,6 +235,13 @@ protected
   
   def normalize_open_id_url
     return if open_id_url.nil?
+    
+    # fixup empty url value
+    if open_id_url.empty?
+      self.open_id_url = nil
+      return
+    end
+    
     self.open_id_url = OpenIdAuthentication.normalize_identifier(open_id_url)
   end
 end

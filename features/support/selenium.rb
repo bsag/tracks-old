@@ -1,22 +1,19 @@
-Webrat.configure do |config|
-  config.mode = :selenium
-  config.application_environment = :selenium
-  config.selenium_browser_startup_timeout = 30
-  #config.selenium_server_address = "localhost"
-end
+if ENV["RAILS_ENV"] == "selenium"
+  puts "Configuring to use Selenium with Webrat for Cucumber stories"
+  Webrat.configure do |config|
+    config.mode = :selenium
 
-Cucumber::Rails::World.use_transactional_fixtures = false
+    config.application_environment = :selenium
+    # use only if you run a separate rails test server instance and do not
+    # want webrat to start one for you
+    # config.application_port = 3001
 
-require 'database_cleaner'
+    config.selenium_browser_startup_timeout = 30
+    # use only if you run a separate selenium server instance and do not
+    # want webrat to start one for you
+    # config.selenium_server_address = "localhost"
+    # config.selenium_server_port = "4444"
+  end
 
-# clean the database once when starting
-DatabaseCleaner.clean_with :truncation
-DatabaseCleaner.strategy = :truncation
-
-Before do
-  DatabaseCleaner.start
-end
-
-After do
-  DatabaseCleaner.clean
+  Cucumber::Rails::World.use_transactional_fixtures = false
 end

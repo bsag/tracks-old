@@ -1,8 +1,8 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 require 'date'
 
 class TodoTest < ActiveSupport::TestCase
-  fixtures :todos, :recurring_todos, :users, :contexts, :preferences, :tags, :taggings
+  fixtures :todos, :recurring_todos, :users, :contexts, :preferences, :tags, :taggings, :projects
 
   def setup
     @not_completed1 = Todo.find(1).reload
@@ -77,10 +77,10 @@ class TodoTest < ActiveSupport::TestCase
   
   def test_defer_an_existing_todo
     @not_completed2
-    assert_equal :active, @not_completed2.current_state
+    assert_equal :active, @not_completed2.aasm_current_state
     @not_completed2.show_from = next_week
     assert @not_completed2.save, "should have saved successfully" + @not_completed2.errors.to_xml
-    assert_equal :deferred, @not_completed2.current_state
+    assert_equal :deferred, @not_completed2.aasm_current_state
   end
   
   def test_create_a_new_deferred_todo
@@ -88,16 +88,16 @@ class TodoTest < ActiveSupport::TestCase
     todo = user.todos.build
     todo.show_from = next_week
     todo.context_id = 1
-    todo.description = 'foo'
+    todo.description = 'foo'    
     assert todo.save, "should have saved successfully" + todo.errors.to_xml
-    assert_equal :deferred, todo.current_state
+    assert_equal :deferred, todo.aasm_current_state
   end
 
   def test_create_a_new_deferred_todo_by_passing_attributes
     user = users(:other_user)
-    todo = user.todos.build(:show_from => next_week, :context_id => 1, :description => 'foo')
+    todo = user.todos.build(:show_from => next_week, :context_id => 1, :description => 'foo')    
     assert todo.save, "should have saved successfully" + todo.errors.to_xml
-    assert_equal :deferred, todo.current_state
+    assert_equal :deferred, todo.aasm_current_state
   end
 
   def test_feed_options
@@ -108,11 +108,11 @@ class TodoTest < ActiveSupport::TestCase
 
   def test_toggle_completion
     t = @not_completed1
-    assert_equal :active, t.current_state
+    assert_equal :active, t.aasm_current_state
     t.toggle_completion!
-    assert_equal :completed, t.current_state
+    assert_equal :completed, t.aasm_current_state
     t.toggle_completion!
-    assert_equal :active, t.current_state
+    assert_equal :active, t.aasm_current_state
   end
 
   def test_activate_also_saves
@@ -125,6 +125,20 @@ class TodoTest < ActiveSupport::TestCase
     assert t.active?
     t.reload
     assert t.active?
+  end
+
+  def test_activate_also_clears_show_from
+    # setup test case
+    t = @not_completed1
+    t.show_from = 1.week.from_now
+    t.save!
+    assert t.deferred?
+    t.reload
+
+    # activate and check show_from
+    t.activate!
+    assert t.active?
+    assert t.show_from.nil?
   end
 
   def test_project_returns_null_object_when_nil
@@ -140,7 +154,7 @@ class TodoTest < ActiveSupport::TestCase
     t.context_id = 1
     t.save!
     t.reload
-    assert_equal :active, t.current_state
+    assert_equal :active, t.aasm_current_state
   end
 
   def test_initial_state_is_deferred_when_show_from_in_future
@@ -151,7 +165,7 @@ class TodoTest < ActiveSupport::TestCase
     t.show_from = 1.week.from_now.to_date
     t.save!
     t.reload
-    assert_equal :deferred, t.current_state
+    assert_equal :deferred, t.aasm_current_state
   end
   
   def test_todo_is_not_starred
@@ -177,5 +191,52 @@ class TodoTest < ActiveSupport::TestCase
     @not_completed1.toggle_star!
     assert !@not_completed1.starred?
   end
-  
+
+  def test_todo_specification_handles_null_project
+    # @not_completed1 has a project
+    todo_desc = @not_completed1.description
+    assert_equal "'#{todo_desc}' <'agenda'; 'Make more money than Billy Gates'>", @not_completed1.specification
+
+    # now check on null
+    @not_completed1.project = nil
+    @not_completed1.save
+    assert_equal "'#{todo_desc}' <'agenda'; '(none)'>", @not_completed1.specification
+  end
+
+  def test_add_predecessor_list
+    todo = Todo.new
+
+    single = @not_completed1.id.to_s
+    multi = single + ", " + @not_completed2.id.to_s # note one space after comma
+
+    @predecessor_array = todo.add_predecessor_list(single)
+    assert_not_nil @predecessor_array
+    assert_equal 1, @predecessor_array.size
+
+    @predecessor_array = todo.add_predecessor_list(multi)
+    assert_not_nil @predecessor_array
+    assert_equal 2, @predecessor_array.size
+  end
+
+  def test_add_predecessor_list_with_comma
+    # test for #975
+    todo = Todo.new
+
+    @not_completed1.description = "test,1,2,3"
+    @not_completed1.save
+    @not_completed2.description = "test,4,5,6"
+    @not_completed2.save
+
+    single = @not_completed1.id.to_s
+    multi = single + "," + @not_completed2.id.to_s  # note no space after comma
+
+    @predecessor_array = todo.add_predecessor_list(single)
+    assert_not_nil @predecessor_array
+    assert_equal 1, @predecessor_array.size
+
+    @predecessor_array = todo.add_predecessor_list(multi)
+    assert_not_nil @predecessor_array
+    assert_equal 2, @predecessor_array.size
+  end
+
 end

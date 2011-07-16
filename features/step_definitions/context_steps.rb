@@ -3,8 +3,32 @@ Given /^I have no contexts$/ do
   Context.delete_all
 end
 
+Given /^there exists an active context called "([^"]*)" for user "([^"]*)"$/ do |context_name, login|
+  user = User.find_by_login(login)
+  user.should_not be_nil
+  @context = user.contexts.create!(:name => context_name, :hide => false)
+end
+
+Given /^there exists a context called "([^"]*)" for user "([^"]*)"$/ do |context_name, login|
+  Given "there exists an active context called \"#{context_name}\" for user \"#{login}\""
+end
+
+Given /^there exists a hidden context called "([^"]*)" for user "([^"]*)"$/ do |context_name, login|
+  user = User.find_by_login(login)
+  user.should_not be_nil
+  @context = user.contexts.create!(:name => context_name, :hide => true)
+end
+
 Given /^I have a context called "([^\"]*)"$/ do |context_name|
-  @context = @current_user.contexts.create!(:name => context_name)
+  Given "there exists an active context called \"#{context_name}\" for user \"#{@current_user.login}\""
+end
+
+Given /^I have an active context called "([^\"]*)"$/ do |context_name|
+  Given "there exists an active context called \"#{context_name}\" for user \"#{@current_user.login}\""
+end
+
+Given /^I have a hidden context called "([^\"]*)"$/ do |context_name|
+  Given "there exists a hidden context called \"#{context_name}\" for user \"#{@current_user.login}\""
 end
 
 Given /^I have the following contexts:$/ do |table|
@@ -20,35 +44,21 @@ Given /^I have a context "([^\"]*)" with (.*) actions$/ do |context_name, number
   end
 end
 
-When /^I visits the context page for "([^\"]*)"$/ do |context_name|
-  context = @current_user.contexts.find_by_name(context_name)
-  context.should_not be_nil
-  visit "/contexts/#{context.id}" 
+Given /^I have the following contexts$/ do |table|
+  Context.delete_all
+  table.hashes.each do |hash|
+    context = @current_user.contexts.create!(:name => hash[:name])
+    unless hash[:hide].blank?
+      context.hide = hash[:hide] == true
+      context.save!
+    end
+  end
 end
 
 When /^I edit the context name in place to be "([^\"]*)"$/ do |new_context_name|
   selenium.click "context_name"
-  fill_in "value", :with => "OutAndAbout"
-  click_button "OK"
-end
-
-When /^I delete the context "([^\"]*)"$/ do |context_name|
-  context = @current_user.contexts.find_by_name(context_name)
-  context.should_not be_nil
-  click_link "delete_context_#{context.id}"
-  selenium.get_confirmation.should == "Are you sure that you want to delete the context '#{context_name}'?"
-  wait_for do
-    !selenium.is_element_present("delete_context_#{context.id}")
-  end
-end
-
-When /^I edit the context to rename it to "([^\"]*)"$/ do |new_name|
-  click_link "edit_context_#{@context.id}"
-  fill_in "context_name", :with => new_name
-  click_button "submit_context_#{@context.id}"
-  wait_for do
-    selenium.is_visible("flash")
-  end
+  fill_in "value", :with => new_context_name
+  click_button "Ok"
 end
 
 Then /^I should see the context name is "([^\"]*)"$/ do |context_name|

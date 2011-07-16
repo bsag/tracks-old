@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class TagTest < ActiveSupport::TestCase
   fixtures :tags
@@ -26,4 +26,5 @@ class TagTest < ActiveSupport::TestCase
     tag = Tag.find_or_create_by_name("8.1.2")
     assert !tag.new_record?
   end
+
 end

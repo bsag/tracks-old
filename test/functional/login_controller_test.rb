@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 require 'login_controller'
 require_dependency "login_system"
 
@@ -66,14 +66,14 @@ class LoginControllerTest < ActionController::TestCase
   def test_login_bad_password
     post :login, {:user_login => 'jane', :user_password => 'wrong', :user_noexpiry => 'on'}
     assert(!@response.has_session_object?(:user))
-    assert_equal "Login unsuccessful", flash[:warning]
+    assert_equal "Login unsuccessful.", flash[:warning]
     assert_response :success
   end
   
   def test_login_bad_login
     post :login, {:user_login => 'blah', :user_password => 'sesame', :user_noexpiry => 'on'}
     assert(!@response.has_session_object?(:user))
-    assert_equal "Login unsuccessful", flash[:warning]
+    assert_equal "Login unsuccessful.", flash[:warning]
     assert_response :success
   end
   

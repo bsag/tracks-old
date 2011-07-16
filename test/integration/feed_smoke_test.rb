@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path( File.dirname(__FILE__) + '/../test_helper')
 require 'projects_controller'
 require 'contexts_controller'
 require 'todos_controller'
@@ -113,6 +113,10 @@ class FeedSmokeTest < ActionController::IntegrationTest
 
   def test_all_projects_txt
     assert_success "/projects.txt?token=#{ users(:admin_user).token }"
+  end
+
+  def test_calendar_ics
+    assert_success "/calendar.ics?token=#{ users(:admin_user).token }"
   end
 
   def test_all_projects_txt_with_hidden_project

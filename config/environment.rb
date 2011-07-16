@@ -14,16 +14,22 @@ class Rails::Configuration
   attr_accessor :action_web_service
 end
 
+Encoding.default_external = Encoding::UTF_8 if RUBY_VERSION > "1.9"
+
 Rails::Initializer.run do |config|
   # Skip frameworks you're not going to use
   # config.frameworks -= [ :action_web_service, :action_mailer ]
-  config.load_paths += %W( #{RAILS_ROOT}/app/apis )
+  config.autoload_paths += %W( #{RAILS_ROOT}/app/apis )
 
   config.gem "highline"
-  config.gem "RedCloth"
+  config.gem "RedCloth", :lib => 'redcloth', :version => '4.2.3'
   config.gem "soap4r", :lib => false
-  config.gem 'datanoise-actionwebservice', :lib => 'actionwebservice'
-  config.gem 'sanitize'
+  config.gem 'datanoise-actionwebservice', :lib => 'actionwebservice', :source => "http://gems.github.com"
+  config.gem 'sanitize', :version => '~> 1.2.1'
+  config.gem 'rack', :version => '1.1.0'
+  config.gem 'will_paginate', :version => '~> 2.3.15'
+  config.gem 'has_many_polymorphs'
+  config.gem 'aasm', :version => '2.2.0'
 
   config.action_controller.use_accept_header = true
 
@@ -32,8 +38,8 @@ Rails::Initializer.run do |config|
   config.action_controller.session_store = :active_record_store
 
   config.action_controller.session = {
-    :session_key => '_tracks_session_id',
-    :secret      =>  SITE_CONFIG['salt'] * (30.0 /  SITE_CONFIG['salt'].length).ceil #must be at least 30 characters
+    :key    => '_tracks_session_id',
+    :secret =>  SITE_CONFIG['salt'] * (30.0 /  SITE_CONFIG['salt'].length).ceil #must be at least 30 characters
   }
 
   config.action_controller.relative_url_root = SITE_CONFIG['subdir'] if SITE_CONFIG['subdir']
@@ -61,6 +67,10 @@ Rails::Initializer.run do |config|
   # to enable "link":onenote://... or "link":blah://... hyperlinks
   config.action_view.sanitized_allowed_protocols = 'onenote', 'message'
 
+  # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
+  # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+  # config.i18n.default_locale = :de
+  
   # See Rails::Configuration for more options
   if ( SITE_CONFIG['authentication_schemes'].include? 'cas')
     #requires rubycas-client gem to be installed
@@ -112,7 +122,7 @@ if ( SITE_CONFIG['authentication_schemes'].include? 'cas')
   end
 end
 
-tracks_version='1.8devel'
+tracks_version='2.1devel'
 # comment out next two lines if you do not want (or can not) the date of the
 # last git commit in the footer
 info=`git log --pretty=format:"%ai" -1`

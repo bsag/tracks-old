@@ -2,7 +2,7 @@
 
 /* @override http://0.0.0.0:3000/stylesheets/standard.css?1180885851 */
 
-body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
     margin:0;
     padding:0;
 }
@@ -115,12 +115,16 @@ a.show_successors:hover, a.link_to_successors:hover {background-image: url(../im
 }
 
 body.preferences div#display_box {
-    margin-right:410px;
+    margin-right:510px;
 }
 
 body.preferences div#input_box {
-    width:390px;
+    width:490px;
     right:15px;
+}
+
+body.preferences select#prefs_time_zone, body.preferences select#prefs_sms_context_id {
+    width: 250px;
 }
 
 #single_box {
@@ -264,7 +268,7 @@ body.preferences div#input_box {
     background-color: #000;
     color: #eee;
     width: 100%;
-    z-index:101;
+    z-index:501;
 }
 
 #date {
@@ -342,9 +346,51 @@ div#input_box {
 
 #input_box ul {list-style-type: circle; font-size: 0.9em;}
 
-.show_from_input, .due_input, .project_input, .context_input {
+#input_box ul#predecessor_ul {
+    list-style-type: none;
+    color: black;
+}
+
+.show_from_input, .due_input, .project_input, .context_input,
+.predecessor_input {
     float:left;
 }
+
+#input_box input.pred_remove_button {
+    width:1.3em;
+}
+
+.selected_predecessors {
+    clear:right;
+}
+
+form.new_todo_form ul.predecessor_list,
+form.edit_todo_form ul.predecessor_list {
+    color: #999;
+    font-size: 0.8em;
+    padding: 0 0 5pt 0;
+}
+
+form.edit_todo_form ul.predecessor_list {
+    color: black;
+}
+
+ul.predecessor_list li {
+    padding: 0 0;
+}
+
+/* deleting dependency from new form of a todo */
+img.icon_delete_dep {width: 10px; background-image: url(../images/icon_delete.png); background-repeat: no-repeat; background-position: -9px 0; border: none; color:black;}
+a:hover img.icon_delete_dep {width: 10px; background-image: url(../images/icon_delete.png); background-repeat: no-repeat; background-position: 0 0; border: none; color:black; background-color: black;}
+a.icon_delete_dep:hover {width: 10px; background-color: black;}
+
+/* deleting dependency from edit form of a todo */
+form.edit_todo_form a.icon_delete_dep:hover { background-color: #cccccc;}
+form.edit_todo_form a:hover img.icon_delete_dep { background-color: #cccccc; }
+
+/* delete button for deleting a dep from the tree of a todo */
+a.delete_dependency_button:hover {background-color: white;}
+
 
 .box {
     float: left;
@@ -379,9 +425,13 @@ input.item-checkbox {
     vertical-align: middle;
 }
 
-.description, .stale_l1, .stale_l2, .stale_l3 {
-    margin-left: 60px;
+.rec_description, .description {
+    margin-left: 80px;
     position:relative;
+}
+
+.rec_description {
+    margin-left: 80px;
 }
 
 .stale_l1 {
@@ -533,7 +583,7 @@ span.tag a:hover {
 
 div#message_holder {
     position: absolute;
-    z-index: 100;
+    z-index: 502;
     left: 60%;
     top: 30px;
     right: 0px;
@@ -671,12 +721,12 @@ li {
     padding-top:10px;
     font-size: 0.8em;
 }
+
 .sortable_row {
     background: #fff;
     _background: transparent; /* the underscore is only used by ie6 and below */
     padding: 4px 4px 4px 8px;
     margin: 2px 2px;
-    border: 1px solid #ccc;
 }
 
 .edit-form {
@@ -719,7 +769,6 @@ div.buttons, div.buttons a, div.buttons a:hover {
 
 div#list-active-projects, div#list-hidden-projects, div#list-completed-projects, div#list-contexts, div#projects-empty-nd {
     clear:right;
-    border: 1px solid #999;
 }
 
 .project-state-group h2, .list-stategroup-contexts-container h2 {
@@ -825,7 +874,7 @@ input#go_to_project, input#context_hide {
     float: right;
 }
 
-#todo-form-new-action .submit_box, #project_form .submit_box, #context_form .submit_box {
+#todo-form-new-action .submit_box, #project_form .submit_box, #context_form .submit_box, #todo-form-multi-new-action .submit_box {
     height: 25px;
     padding: 5px 0;
     text-align: center;
@@ -937,6 +986,7 @@ div.message {
 
 .grip {
     cursor: move;
+    float: left;
 }
 
 .drop_target {
@@ -1194,16 +1244,19 @@ button.positive, .widgets a.positive{
     border:1px solid #fbc2c4;
     color:#d12f19;
 }
+
 .widgets a.negative:active{
     background-color:#d12f19;
     border:1px solid #d12f19;
     color:#fff;
 }
+
 .blockUI.blockOverlay {
     background-image:url('../images/waiting.gif');
     background-repeat:no-repeat;
     background-position:center center;
     background-color:white;
+    opacity: 1;
 }
 
 .bigWaiting {
@@ -1300,3 +1353,4 @@ div.auto_complete ul strong.highlight {
 .ui-datepicker { 
   z-index: 1000; 
 }
+.ui-autocomplete-loading { background: white url('/images/ui-anim_basic_16x16.gif') right center no-repeat; }

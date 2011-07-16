@@ -4,19 +4,6 @@
 
 require_dependency "login_system"
 require_dependency "tracks/source_view"
-require "redcloth"
-
-require 'date'
-require 'time'
-
-# Commented the following line because of #744. It prevented rake db:migrate to
-# run because this tag went looking for the taggings table that did not exist
-# when you feshly create a new database Old comment: We need this in development
-# mode, or you get 'method missing' errors
-#
-# Tag
-
-class CannotAccessContext < RuntimeError; end
 
 class ApplicationController < ActionController::Base
 
@@ -24,33 +11,36 @@ class ApplicationController < ActionController::Base
 
   helper :application
   include LoginSystem
-  helper_method :current_user, :prefs
+  helper_method :current_user, :prefs, :format_date, :markdown
 
   layout proc{ |controller| controller.mobile? ? "mobile" : "standard" }
   exempt_from_layout /\.js\.erb$/
-
-  
+ 
   before_filter :set_session_expiration
   before_filter :set_time_zone
   before_filter :set_zindex_counter
+  before_filter :set_locale
   prepend_before_filter :login_required
   prepend_before_filter :enable_mobile_content_negotiation
   after_filter :set_charset
-
-  include ActionView::Helpers::TextHelper
-  include ActionView::Helpers::SanitizeHelper
-  extend ActionView::Helpers::SanitizeHelper::ClassMethods
-  helper_method :format_date, :markdown
-
+  
   # By default, sets the charset to UTF-8 if it isn't already set
   def set_charset
     headers["Content-Type"] ||= "text/html; charset=UTF-8" 
   end
   
+  def set_locale
+    locale = params[:locale] # specifying a locale in the request takes precedence
+    locale = locale || prefs.locale unless current_user.nil? # otherwise, the locale of the currently logged in user takes over
+    locale = locale || request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first if request.env['HTTP_ACCEPT_LANGUAGE']
+    I18n.locale = locale.nil? ? I18n.default_locale : (I18n::available_locales.include?(locale.to_sym) ? locale : I18n.default_locale)
+    logger.debug("Selected '#{I18n.locale}' as locale")
+  end
+  
   def set_session_expiration
     # http://wiki.rubyonrails.com/rails/show/HowtoChangeSessionOptions
     unless session == nil
-      return if @controller_name == 'feed' or session['noexpiry'] == "on"
+      return if self.controller_name == 'feed' or session['noexpiry'] == "on"
       # If the method is called by the feed controller (which we don't have
       # under session control) or if we checked the box to keep logged in on
       # login don't set the session expiry time.
@@ -91,11 +81,7 @@ class ApplicationController < ActionController::Base
   #
   def count_undone_todos_phrase(todos_parent, string="actions")
     count = count_undone_todos(todos_parent)
-    if count == 1
-      word = string.singularize
-    else
-      word = string.pluralize
-    end
+    word = count == 1 ? string.singularize : string.pluralize
     return count.to_s + "&nbsp;" + word
   end
   
@@ -114,19 +100,22 @@ class ApplicationController < ActionController::Base
   # config/settings.yml
   #
   def format_date(date)
-    if date
-      date_format = prefs.date_format
-      formatted_date = date.in_time_zone(prefs.time_zone).strftime("#{date_format}")
-    else
-      formatted_date = ''
-    end
-    formatted_date
+    return date ? date.in_time_zone(prefs.time_zone).strftime("#{prefs.date_format}") : ''
   end
 
-
   def for_autocomplete(coll, substr)
-    filtered = coll.find_all{|item| item.name.downcase.include? substr.downcase}
-    return filtered.map {|item| "#{item.name}|#{item.id}"}.join("\n")
+    if substr # protect agains empty request
+      filtered = coll.find_all{|item| item.name.downcase.include? substr.downcase}
+      json_elems = Array[*filtered.map{ |e| {:id => e.id.to_s, :value => e.name} }].to_json
+      return json_elems
+    else
+      return ""
+    end
+  end
+
+  def format_dependencies_as_json_for_auto_complete(entries)
+    json_elems = Array[*entries.map{ |e| {:value => e.id.to_s, :label => e.specification} }].to_json
+    return json_elems
   end
 
   # Uses RedCloth to transform text using either Textile or Markdown Need to
@@ -136,7 +125,7 @@ class ApplicationController < ActionController::Base
   def markdown(text)
     RedCloth.new(text).to_html
   end
-  
+
   # Here's the concept behind this "mobile content negotiation" hack: In
   # addition to the main, AJAXy Web UI, Tracks has a lightweight low-feature
   # 'mobile' version designed to be suitablef or use from a phone or PDA. It
@@ -191,12 +180,18 @@ class ApplicationController < ActionController::Base
     
     return saved ? todo : nil
   end
-     
+
+  def handle_unverified_request
+    unless request.format=="application/xml"
+      super # handle xml http auth via our own login code
+    end
+  end
+
   protected
   
   def admin_login_required
     unless User.find_by_id_and_is_admin(session['user_id'], true)
-      render :text => "401 Unauthorized: Only admin users are allowed access to this function.", :status => 401
+      render :text => t('errors.user_unauthorized'), :status => 401
       return false
     end
   end
@@ -239,6 +234,24 @@ class ApplicationController < ActionController::Base
   def prefered_auth?
     self.class.prefered_auth?
   end
+  
+  def get_done_today(completed_todos, includes = {:include => Todo::DEFAULT_INCLUDES})
+    start_of_this_day = Time.zone.now.beginning_of_day
+    completed_todos.completed_after(start_of_this_day).all(includes)
+  end
+    
+  def get_done_this_week(completed_todos, includes = {:include => Todo::DEFAULT_INCLUDES})
+    start_of_this_week = Time.zone.now.beginning_of_week
+    start_of_this_day = Time.zone.now.beginning_of_day
+    completed_todos.completed_after(start_of_this_week).completed_before(start_of_this_day).all(includes)
+  end
+  
+  def get_done_this_month(completed_todos, includes = {:include => Todo::DEFAULT_INCLUDES})
+    start_of_this_month = Time.zone.now.beginning_of_month
+    start_of_this_week = Time.zone.now.beginning_of_week
+    completed_todos.completed_after(start_of_this_month).completed_before(start_of_this_week).all(includes)
+  end
+
 
   private
         
@@ -253,7 +266,7 @@ class ApplicationController < ActionController::Base
 
     @active_contexts = current_user.contexts.active
     @hidden_contexts = current_user.contexts.hidden
-
+    
     init_not_done_counts
     if prefs.show_hidden_projects_in_sidebar
       init_project_hidden_todo_counts(['project'])
@@ -270,7 +283,7 @@ class ApplicationController < ActionController::Base
     parents.each do |parent|
       eval("@#{parent}_project_hidden_todo_counts = @#{parent}_project_hidden_todo_counts || current_user.todos.count(:conditions => ['state = ? or state = ?', 'project_hidden', 'active'], :group => :#{parent}_id)")
     end
-  end  
+  end
   
   # Set the contents of the flash message from a controller Usage: notify
   # :warning, "This is the message" Sets the flash of type 'warning' to "This is
@@ -286,7 +299,7 @@ class ApplicationController < ActionController::Base
 
   def set_zindex_counter
     # this counter can be used to handle the IE z-index bug
-    @z_index_counter = 1000
+    @z_index_counter = 500
   end
   
 end

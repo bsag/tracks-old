@@ -44,5 +44,27 @@ module ProjectsHelper
     end
     html
   end
-  
+
+  def link_to_delete_project(project, descriptor = sanitize(project.name))
+    link_to(
+      descriptor,
+      project_path(project, :format => 'js'),
+      {
+        :id => "delete_project_#{project.id}",
+        :class => "delete_project_button",
+        :x_confirm_message => t('projects.delete_project_confirmation', :name => project.name),
+        :title => t('projects.delete_project_title')
+      }
+    )
+  end
+
+  def summary(project)
+    project_description = ''
+    project_description += sanitize(markdown( project.description )) unless project.description.blank?
+    project_description += content_tag(:p, 
+      "#{count_undone_todos_phrase(p)}. " + t('projects.project_state', :state => project.state)
+      )
+    project_description
+  end
+
 end
