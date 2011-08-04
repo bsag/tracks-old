@@ -1,4 +1,6 @@
 # Github Pages config
+# Should be published to:
+# http://TracksApp.github.com/tracks/
 safe: true
 lsi: false
 pygments: true
