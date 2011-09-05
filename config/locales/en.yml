@@ -697,6 +697,7 @@ en:
     new_password_label: "New password"
     password_confirmation_label: "Confirm password"
     change_password_submit: "Change password"
+    you_have_to_reset_your_password: "You have to reset your password"
     destroy_successful: "User %{login} was successfully destroyed"
     destroy_error: "There was an error deleting the user %{login}"
     total_actions: "Total actions"
